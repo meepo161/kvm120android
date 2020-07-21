@@ -35,6 +35,10 @@ class KvmController(
         val status = modbusController.readInputRegisters(
             modbusAddress, U_REGISTER, 16, inputBuffer
         )
+        val inputBufferTime = ByteBuffer.allocate(INPUT_BUFFER_SIZE)
+        val statusTime = modbusController.readInputRegisters(
+            modbusAddress, TIME_MEASURE, 2, inputBufferTime
+        )
         return if (status == RequestStatus.FRAME_RECEIVED) {
             Values(
                 true,
@@ -45,7 +49,8 @@ class KvmController(
                 razmah = inputBuffer.float,
                 chtoEshe = inputBuffer.float,
                 coefficentAmp = inputBuffer.float,
-                coefficentForm = inputBuffer.float
+                coefficentForm = inputBuffer.float,
+                timeAveraging = inputBufferTime.float
             )
         } else {
             Values(false)
@@ -185,4 +190,49 @@ class KvmController(
         }
         return false
     }
+
+    fun readDotsF(): List<Float> {
+        stopRewriteDotesFlag()
+        val startRegister = 6656
+        val endRegister = startRegister + 2200
+        val dots = mutableListOf<Float>()
+        for (registerIndex in startRegister..endRegister - 50 step 50) {
+            try {
+                val inputBuffer = ByteBuffer.allocate(INPUT_BUFFER_SIZE)
+                val shorts = modbusController.readInputRegisters(
+                    modbusAddress,
+                    registerIndex.toShort(),
+                    50.toShort(),
+                    inputBuffer
+                )
+                for (index in 0..50) {
+                    dots.add(inputBuffer.float)
+                }
+            } catch (e: Exception) {
+            }
+        }
+        startRewriteDotesFlag()
+        return dots
+    }
+
+    fun stopRewriteDotesFlag() {
+        val inputBuffer = ByteBuffer.allocate(INPUT_BUFFER_SIZE)
+        modbusController.writeSingleHoldingRegister(
+            modbusAddress,
+            4284,
+            shortToByteArray(0),
+            inputBuffer
+        )
+    }
+
+    fun startRewriteDotesFlag() {
+        val inputBuffer = ByteBuffer.allocate(INPUT_BUFFER_SIZE)
+        modbusController.writeSingleHoldingRegister(
+            modbusAddress,
+            4284,
+            shortToByteArray(1),
+            inputBuffer
+        )
+    }
+
 }

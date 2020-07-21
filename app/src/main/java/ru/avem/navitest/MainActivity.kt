@@ -5,11 +5,13 @@ import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
+import android.content.res.Configuration
 import android.hardware.usb.UsbDevice
 import android.hardware.usb.UsbManager
 import android.os.Bundle
 import android.view.Menu
 import android.view.WindowManager
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import androidx.drawerlayout.widget.DrawerLayout
@@ -33,6 +35,8 @@ class MainActivity : AppCompatActivity() {
         const val ACTION_USB_ATTACHED = "android.hardware.usb.action.USB_DEVICE_ATTACHED"
         const val ACTION_USB_DETACHED = "android.hardware.usb.action.USB_DEVICE_DETACHED"
         const val RS485_DEVICE_NAME = "CP2103 USB to RS-485"
+        const val ORIENTATION_PORTRAIT = 1
+        const val ORIENTATION_LANDSCAPE = 2
     }
 
     private lateinit var broadcastReceiver: BroadcastReceiver

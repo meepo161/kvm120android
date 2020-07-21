@@ -31,6 +31,7 @@ class ValuesFragment : Fragment(), Observer {
         btnApplyTimeAveraging.setOnClickListener {
             //TODO записать
         }
+
     }
 
     override fun update(observable: Observable, values: Any) {
@@ -49,29 +50,9 @@ class ValuesFragment : Fragment(), Observer {
                         etRms.setText(String.format("%.4f", allValues.voltageRms))
                         etFreq.setText(String.format("%.4f", allValues.frequency))
                         etCoefficentAmp.setText(String.format("%.4f", allValues.coefficentAmp))
+                        etCoefficentForm.setText(String.format("%.4f", allValues.coefficentForm))
+                        etTimeAveraging.setText(String.format("%.1f", allValues.timeAveraging))
                     }
-                    KvmController.Action.VOLTAGE_AMP -> {
-                        etAmp.setText(String.format("%.4f", value))
-                    }
-                    KvmController.Action.VOLTAGE_AVR -> {
-                        etAvr.setText(String.format("%.4f", value))
-                    }
-                    KvmController.Action.VOLTAGE_RMS -> {
-                        etRms.setText(String.format("%.4f", value))
-                    }
-                    KvmController.Action.FREQUENCY -> {
-                        etFreq.setText(String.format("%.4f", value))
-                    }
-                    KvmController.Action.RAZMAH -> {
-                    }
-                    KvmController.Action.CHTO_ESHE -> {
-                    }
-                    KvmController.Action.COEFFICENT_AMP -> {
-                        etCoefficentAmp.setText(String.format("%.4f", value))
-                    }
-//                KvmController.Action.COEFFICENT_FORM -> {
-//                    etCoefficentForm.setText(String.format("%.4f", value))
-//                }
                 }
             }
         }
