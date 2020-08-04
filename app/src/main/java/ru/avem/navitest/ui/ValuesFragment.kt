@@ -42,6 +42,7 @@ class ValuesFragment : Fragment(), Observer {
         btnSaveDot.setOnClickListener {
             saveProtocolDotToDB()
         }
+
     }
 
     override fun update(observable: Observable, values: Any) {
@@ -106,12 +107,12 @@ class ValuesFragment : Fragment(), Observer {
                 ProtocolDot(
                     dateDot = dateFormatter.format(unixTime).toString(),
                     timeDot = timeFormatter.format(unixTime).toString(),
-                    rms = tvRms.text.toString(),
-                    avr = tvAvr.text.toString(),
-                    amp = tvAmp.text.toString(),
-                    freq = tvFreq.text.toString(),
-                    coefamp = tvCoefficentAmp.text.toString(),
-                    coefform = tvCoefficentForm.text.toString()
+                    rms = etRms.text.toString(),
+                    avr = etAvr.text.toString(),
+                    amp = etAmp.text.toString(),
+                    freq = etFreq.text.toString(),
+                    coefamp = etCoefficentAmp.text.toString(),
+                    coefform = etCoefficentForm.text.toString()
                 )
             )
         }

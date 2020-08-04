@@ -63,4 +63,8 @@
     <string name="viewing">Просмотр</string>
     <string name="dots">Точки</string>
     <string name="graphs">Графики</string>
+    <string name="delete">Удалить</string>
+    <string name="save">Сохранить</string>
+    <string name="open">Открыть</string>
+    <string name="select_protocol">Выберите протокол</string>
 </resources>

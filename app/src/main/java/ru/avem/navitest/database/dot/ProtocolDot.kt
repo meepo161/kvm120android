@@ -16,4 +16,6 @@ data class ProtocolDot(
 ) {
     @PrimaryKey(autoGenerate = true)
     var id: Long? = null
+
+    override fun toString() = "$dateDot $timeDot"
 }

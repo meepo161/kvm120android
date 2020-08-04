@@ -22,7 +22,6 @@ import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.core.content.FileProvider
 import com.github.mjdev.libaums.UsbMassStorageDevice
-import io.realm.Realm
 import org.apache.poi.ss.usermodel.*
 import org.apache.poi.ss.usermodel.charts.AxisPosition
 import org.apache.poi.ss.usermodel.charts.ChartDataSource
@@ -334,8 +333,11 @@ object Logging {
     }
 
     private fun clearDirectory(directory: File) {
-        for (child in directory.listFiles()) {
-            child.delete()
+        val listFiles = directory.listFiles()
+        if (listFiles != null) {
+            for (child in listFiles) {
+                child.delete()
+            }
         }
     }
 
@@ -411,17 +413,17 @@ object Logging {
         override fun doInBackground(vararg params: ProtocolDot?): String? {
             var fileName: String? = null
             var protocolDot = params[0]!!
-                if (mType == 1) {
-                    fileName = writeWorkbookToMassStorage(
-                        protocolDot,
-                        mContext
-                    )
-                } else if (mType == 2) {
-                    fileName = writeWorkbookToInternalStorage(
-                        protocolDot,
-                        mContext
-                    )
-                }
+            if (mType == 1) {
+                fileName = writeWorkbookToMassStorage(
+                    protocolDot,
+                    mContext
+                )
+            } else if (mType == 2) {
+                fileName = writeWorkbookToInternalStorage(
+                    protocolDot,
+                    mContext
+                )
+            }
             return fileName
         }
 

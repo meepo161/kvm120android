@@ -5,7 +5,6 @@ import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
-import ru.avem.navitest.database.dot.ProtocolDot
 
 @Dao
 interface ProtocolDotDao {
@@ -21,6 +20,6 @@ interface ProtocolDotDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insert(vararg protocolDot: ProtocolDot)
 
-    @Query("DELETE FROM protocol_dot")
-    fun clear()
+    @Query("DELETE FROM protocol_dot WHERE id = :id")
+    fun deleteById(id: Long)
 }

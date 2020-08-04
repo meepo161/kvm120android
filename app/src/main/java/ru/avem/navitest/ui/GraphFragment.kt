@@ -61,7 +61,7 @@ class GraphFragment : Fragment(), Observer {
         if (resources.configuration.orientation == ORIENTATION_PORTRAIT) {
             lineChart.minimumHeight = 1200
         } else if (resources.configuration.orientation == ORIENTATION_LANDSCAPE) {
-            lineChart.minimumHeight = 400
+            lineChart.minimumHeight = 500
         }
         var selectedItem = ""
 
