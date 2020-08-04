@@ -34,8 +34,8 @@ import org.apache.poi.xssf.usermodel.XSSFSheet
 import org.apache.poi.xssf.usermodel.XSSFWorkbook
 import org.openxmlformats.schemas.drawingml.x2006.chart.CTBoolean
 import ru.avem.navitest.R
-import ru.avem.navitest.database.entities.Protocol
-import ru.avem.navitest.database.entities.ProtocolDot
+import ru.avem.navitest.database.dot.ProtocolDot
+import ru.avem.navitest.database.graph.ProtocolGraph
 import ru.avem.navitest.utils.Utils
 import java.io.ByteArrayOutputStream
 import java.io.File
@@ -48,11 +48,11 @@ object Logging {
     private const val ACTION_USB_PERMISSION = "ru.avem.coilstestingfacility.USB_PERMISSION"
     fun preview(
         activity: Activity,
-        protocol: Protocol?
+        protocolDot: ProtocolDot
     ) {
         if (requestPermission(activity)) {
-            if (protocol != null) {
-                SaveTask(2, activity).execute(protocol.id)
+            if (protocolDot != null) {
+                SaveTask(2, activity).execute(protocolDot)
             } else {
                 Toast.makeText(
                     activity,
@@ -83,7 +83,7 @@ object Logging {
             return false
         } else {
             val path =
-                Environment.getExternalStorageDirectory().absolutePath + "/protocol"
+                Environment.getExternalStorageDirectory().absolutePath + "/protocolDot"
             val storageDir = File(path)
             if (!storageDir.exists() && !storageDir.mkdirs()) {
                 return false
@@ -93,13 +93,13 @@ object Logging {
     }
 
     private fun writeWorkbookToMassStorage(
-        protocol: ProtocolDot,
+        protocolDot: ProtocolDot,
         context: Context
     ): String {
         val sdf =
             SimpleDateFormat("dd_MM(HH-mm-ss)", Utils.RU_LOCALE)
         var fileName =
-            "protocol-" + sdf.format(System.currentTimeMillis()) + ".xlsx"
+            "protocolDot-" + sdf.format(System.currentTimeMillis()) + ".xlsx"
         val massStorageDevices =
             UsbMassStorageDevice.getMassStorageDevices(context)
         val currentDevice = massStorageDevices[0]
@@ -110,7 +110,7 @@ object Logging {
             val root = currentFS.rootDirectory
             val file = root.createFile(fileName)
             val out =
-                convertProtocolToWorkbook(protocol, context)
+                convertProtocolDotToWorkbook(protocolDot, context)
             file.write(0, ByteBuffer.wrap(out.toByteArray()))
             file.close()
             fileName = currentFS.volumeLabel + "/" + fileName
@@ -122,8 +122,8 @@ object Logging {
     }
 
     @Throws(IOException::class)
-    private fun convertProtocolToWorkbook(
-        protocol: ProtocolDot,
+    private fun convertProtocolDotToWorkbook(
+        protocolDot: ProtocolDot,
         context: Context
     ): ByteArrayOutputStream {
         val res = context.resources
@@ -138,15 +138,15 @@ object Logging {
                         val cell = row.getCell(j)
                         if (cell != null && cell.cellTypeEnum == CellType.STRING) {
                             when (cell.stringCellValue) {
-                                "#PROTOCOL_NUMBER#" -> cell.setCellValue(protocol.id.toString())
-                                "#DATE#" -> cell.setCellValue(protocol.dateDot)
-                                "#TIME#" -> cell.setCellValue(protocol.timeDot)
-                                "#RMS#" -> cell.setCellValue(protocol.rms)
-                                "#AVR#" -> cell.setCellValue(protocol.avr)
-                                "#AMP#" -> cell.setCellValue(protocol.amp)
-                                "#FREQ#" -> cell.setCellValue(protocol.freq)
-                                "#COEFAMP#" -> cell.setCellValue(protocol.coefamp)
-                                "#COEFDOP#" -> cell.setCellValue(protocol.coefdop)
+                                "#PROTOCOL_NUMBER#" -> cell.setCellValue(protocolDot.id.toString())
+                                "#DATE#" -> cell.setCellValue(protocolDot.dateDot)
+                                "#TIME#" -> cell.setCellValue(protocolDot.timeDot)
+                                "#RMS#" -> cell.setCellValue(protocolDot.rms)
+                                "#AVR#" -> cell.setCellValue(protocolDot.avr)
+                                "#AMP#" -> cell.setCellValue(protocolDot.amp)
+                                "#FREQ#" -> cell.setCellValue(protocolDot.freq)
+                                "#COEFAMP#" -> cell.setCellValue(protocolDot.coefamp)
+                                "#COEFFORM#" -> cell.setCellValue(protocolDot.coefform)
                                 else -> {
                                     if (cell.stringCellValue.contains("#")) {
                                         cell.setCellValue("")
@@ -166,8 +166,8 @@ object Logging {
     }
 
     @Throws(IOException::class)
-    private fun convertProtocolToWorkbook(
-        protocol: Protocol,
+    private fun convertProtocolGraphToWorkbook(
+        protocolGraph: ProtocolGraph,
         context: Context
     ): ByteArrayOutputStream {
         val res = context.resources
@@ -182,10 +182,10 @@ object Logging {
                         val cell = row.getCell(j)
                         if (cell != null && cell.cellTypeEnum == CellType.STRING) {
                             when (cell.stringCellValue) {
-                                "#PROTOCOL_NUMBER#" -> cell.setCellValue(protocol.id.toString())
-                                "#TYPEOFVALUE#" -> cell.setCellValue(protocol.typeOfValue)
-                                "#DATE#" -> cell.setCellValue(protocol.date)
-                                "#TIME#" -> cell.setCellValue(protocol.time)
+                                "#PROTOCOL_NUMBER#" -> cell.setCellValue(protocolGraph.id.toString())
+                                "#TYPEOFVALUE#" -> cell.setCellValue(protocolGraph.typeOfValue)
+                                "#DATE#" -> cell.setCellValue(protocolGraph.date)
+                                "#TIME#" -> cell.setCellValue(protocolGraph.time)
                                 else -> {
                                     if (cell.stringCellValue.contains("#")) {
                                         cell.setCellValue("")
@@ -196,7 +196,7 @@ object Logging {
                     }
                 }
             }
-            fillParameters(wb, protocol.values)
+            fillParameters(wb, protocolGraph.values)
             drawLineChart(wb)
             val outStream = ByteArrayOutputStream()
             wb.write(outStream)
@@ -316,7 +316,7 @@ object Logging {
             "protocol-" + sdf.format(System.currentTimeMillis()) + ".xlsx"
         try {
             val out =
-                convertProtocolToWorkbook(protocol, context)
+                convertProtocolDotToWorkbook(protocol, context)
             val file = File(
                 Environment.getExternalStorageDirectory()
                     .absolutePath + "/protocol", fileName
@@ -341,10 +341,10 @@ object Logging {
 
     fun saveFileOnFlashMassStorage(
         context: Context,
-        protocol: Protocol
+        protocol: ProtocolDot
     ) {
         if (checkMassStorageConnection(context)) {
-            SaveTask(1, context).execute(protocol.id)
+            SaveTask(1, context).execute(protocol)
         } else {
             AlertDialog.Builder(
                 context
@@ -401,33 +401,27 @@ object Logging {
         private val mType: Int,
         private val mContext: Context
     ) :
-        AsyncTask<Long?, Void?, String?>() {
+        AsyncTask<ProtocolDot?, Void?, String?>() {
         private val dialog: ProgressDialog
         override fun onPreExecute() {
             super.onPreExecute()
             dialog.show()
         }
 
-        override fun doInBackground(vararg params: Long?): String? {
+        override fun doInBackground(vararg params: ProtocolDot?): String? {
             var fileName: String? = null
-            var protocol: ProtocolDot
-            Realm.getDefaultInstance().use { realm ->
-                realm.beginTransaction()
-                protocol = realm.where(ProtocolDot::class.javaObjectType).equalTo("id", params[0])
-                    .findFirst()!!
-                realm.commitTransaction()
+            var protocolDot = params[0]!!
                 if (mType == 1) {
                     fileName = writeWorkbookToMassStorage(
-                        protocol,
+                        protocolDot,
                         mContext
                     )
                 } else if (mType == 2) {
                     fileName = writeWorkbookToInternalStorage(
-                        protocol,
+                        protocolDot,
                         mContext
                     )
                 }
-            }
             return fileName
         }
 

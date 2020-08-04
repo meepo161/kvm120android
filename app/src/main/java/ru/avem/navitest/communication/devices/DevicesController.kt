@@ -54,6 +54,6 @@ object DevicesController : Observable() {
     }
 
     fun reinit() {
-
+        //TODO
     }
 }

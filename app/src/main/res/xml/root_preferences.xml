@@ -1,0 +1,49 @@
+<PreferenceScreen xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <PreferenceCategory app:title="Отображаемые параметры">
+
+        <SwitchPreferenceCompat
+            app:icon="@drawable/ic_baseline_timeline_24"
+            app:key="tvRms"
+            app:title="@string/tvRms" />
+        <SwitchPreferenceCompat
+            app:icon="@drawable/ic_baseline_maximize_24"
+            app:key="tvAmp"
+            app:title="@string/tvAmp" />
+        <SwitchPreferenceCompat
+            app:icon="@drawable/ic_baseline_merge_type_24"
+            app:key="tvAvr"
+            app:title="@string/tvAvr" />
+        <SwitchPreferenceCompat
+            app:icon="@drawable/ic_baseline_waves_24"
+            app:key="tvFreq"
+            app:title="@string/tvFreq" />
+        <SwitchPreferenceCompat
+            app:icon="@drawable/ic_baseline_format_align_justify_24"
+            app:key="tvCoefficentAmp"
+            app:title="@string/tvCoefficentAmp" />
+        <SwitchPreferenceCompat
+            app:icon="@drawable/ic_baseline_format_align_center_24"
+            app:key="tvCoefficentForm"
+            app:title="@string/tvCoefficentForm" />
+        <SwitchPreferenceCompat
+            app:icon="@drawable/ic_baseline_functions_24"
+            app:key="tvRazmah"
+            app:title="@string/tvRazmah" />
+
+
+    </PreferenceCategory>
+
+    <PreferenceCategory app:title="@string/time_record">
+
+        <ListPreference
+            app:icon="@drawable/ic_baseline_timer_24"
+            app:entries="@array/listTimesRecord"
+            app:entryValues="@array/listTimesRecord"
+            app:key="time"
+            app:title="Запись, мин"
+            app:summary="Выберите из списка"/>
+
+    </PreferenceCategory>
+
+</PreferenceScreen>

@@ -3,18 +3,31 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:showIn="navigation_view">
 
-    <group android:checkableBehavior="single">
-        <item
-            android:id="@+id/nav_values"
-            android:icon="@drawable/ic_baseline_format_list_numbered_24"
-            android:title="@string/values" />
-        <item
-            android:id="@+id/nav_graph"
-            android:icon="@drawable/ic_baseline_timeline_24"
-            android:title="@string/graph" />
-        <item
-            android:id="@+id/nav_dopValues"
-            android:icon="@drawable/ic_baseline_playlist_add_24"
-            android:title="@string/dopvalues" />
+    <group android:checkableBehavior="all">
+        <item android:title="@string/viewing">
+            <menu>
+                <item
+                    android:id="@+id/nav_values"
+                    android:icon="@drawable/ic_baseline_format_list_numbered_24"
+                    android:title="@string/values" />
+                <item
+                    android:id="@+id/nav_graph"
+                    android:icon="@drawable/ic_baseline_timeline_24"
+                    android:title="@string/graph" />
+            </menu>
+        </item>
+
+        <item android:title="@string/protocols">
+            <menu>
+                <item
+                    android:id="@+id/nav_protocols_dots"
+                    android:icon="@drawable/ic_baseline_scatter_plot_24"
+                    android:title="@string/dots" />
+                <item
+                    android:id="@+id/nav_protocols_graphs"
+                    android:icon="@drawable/ic_baseline_show_chart_24"
+                    android:title="@string/graphs" />
+            </menu>
+        </item>
     </group>
 </menu>

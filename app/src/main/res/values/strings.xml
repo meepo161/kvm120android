@@ -27,6 +27,9 @@
     <string name="start_record">Начать запись</string>
     <string name="stop_record">Стоп запись</string>
     <string name="apply">Применить</string>
+    <string name="saveDot">Сохранить точку</string>
+    <string name="settings">Настройки</string>
+    <string name="parametrs_to_display">Какие параметры отображать:</string>
     <string-array name="values">
         <item>Действующее</item>
         <item>Среднее</item>
@@ -36,4 +39,28 @@
         <item>Коэффицент амплитуды</item>
         <item>Коэффицент формы</item>
     </string-array>
+    <string name="title_activity_settings">Настройки</string>
+
+    <!-- Preference Titles -->
+    <string name="messages_header">Messages</string>
+    <string name="sync_header">Sync</string>
+
+    <!-- Messages Preferences -->
+    <string name="signature_title">Your signature</string>
+    <string name="reply_title">Default reply action</string>
+
+    <!-- Sync Preferences -->
+    <string name="sync_title">Sync email periodically</string>
+    <string name="attachment_title">Download incoming attachments</string>
+    <string name="attachment_summary_on">Automatically download attachments for incoming emails
+    </string>
+    <string name="attachment_summary_off">Only download attachments when manually requested</string>
+    <string name="time_record">Время записи:</string>
+    <string name="averaging_time">Время усреднения, мс</string>
+    <string name="protocols_dots">Протоколы точек</string>
+    <string name="protocols_graphs">Протоколы графиков</string>
+    <string name="protocols">Протоколы</string>
+    <string name="viewing">Просмотр</string>
+    <string name="dots">Точки</string>
+    <string name="graphs">Графики</string>
 </resources>

@@ -5,13 +5,11 @@ import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
-import android.content.res.Configuration
 import android.hardware.usb.UsbDevice
 import android.hardware.usb.UsbManager
 import android.os.Bundle
 import android.view.Menu
-import android.view.WindowManager
-import android.widget.Toast
+import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import androidx.drawerlayout.widget.DrawerLayout
@@ -20,11 +18,14 @@ import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.navigateUp
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
+import androidx.recyclerview.widget.DividerItemDecoration
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.navigation.NavigationView
 import ru.avem.navitest.communication.devices.DevicesController
+import ru.avem.navitest.ui.SettingsActivity
 import ru.avem.navitest.utils.Logger
 import java.util.*
+
 
 class MainActivity : AppCompatActivity() {
     private lateinit var appBarConfiguration: AppBarConfiguration
@@ -37,6 +38,7 @@ class MainActivity : AppCompatActivity() {
         const val RS485_DEVICE_NAME = "CP2103 USB to RS-485"
         const val ORIENTATION_PORTRAIT = 1
         const val ORIENTATION_LANDSCAPE = 2
+        const val APP_PREFERENCES = "mysettings"
     }
 
     private lateinit var broadcastReceiver: BroadcastReceiver
@@ -45,11 +47,10 @@ class MainActivity : AppCompatActivity() {
     private var mNeedToAuthorizeDevices = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        window.setFlags(
-            WindowManager.LayoutParams.FLAG_FULLSCREEN,
-            WindowManager.LayoutParams.FLAG_FULLSCREEN
-        )
-
+//        window.setFlags(
+//            WindowManager.LayoutParams.FLAG_FULLSCREEN,
+//            WindowManager.LayoutParams.FLAG_FULLSCREEN
+//        )
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         val toolbar: Toolbar = findViewById(R.id.toolbar)
@@ -69,11 +70,15 @@ class MainActivity : AppCompatActivity() {
         val drawerLayout: DrawerLayout = findViewById(R.id.drawer_layout)
         val navView: NavigationView = findViewById(R.id.nav_view)
         val navController = findNavController(R.id.nav_host_fragment)
+
         // Passing each menu ID as a set of Ids because each
         // menu should be considered as top level destinations.
         appBarConfiguration = AppBarConfiguration(
             setOf(
-                R.id.nav_values, R.id.nav_graph, R.id.nav_dopValues
+                R.id.nav_values,
+                R.id.nav_graph,
+                R.id.nav_protocols_dots,
+                R.id.nav_protocols_graphs
             ), drawerLayout
         )
         setupActionBarWithNavController(navController, appBarConfiguration)
@@ -83,9 +88,18 @@ class MainActivity : AppCompatActivity() {
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
-        // Inflate the menu; this adds items to the action bar if it is present.
         menuInflater.inflate(R.menu.main, menu)
         return true
+    }
+
+    override fun onOptionsItemSelected(menuItem: MenuItem): Boolean {
+        if (menuItem.itemId == R.id.action_settings) {
+            Intent(this, SettingsActivity::class.java).also {
+                startActivity(it)
+            }
+
+        }
+        return super.onOptionsItemSelected(menuItem)
     }
 
     override fun onSupportNavigateUp(): Boolean {

@@ -1,6 +1,7 @@
-package ru.avem.navitest.ui.graph
+package ru.avem.navitest.ui
 
 import android.content.res.Configuration
+import android.graphics.Color
 import android.os.Bundle
 import android.os.Handler
 import android.view.LayoutInflater
@@ -26,6 +27,7 @@ import ru.avem.navitest.communication.devices.kvm.KvmController
 import ru.avem.navitest.communication.devices.kvm.Values
 import ru.avem.navitest.model.Model
 import java.util.*
+import kotlin.random.Random.Default.nextFloat
 
 
 class GraphFragment : Fragment(), Observer {
@@ -59,9 +61,9 @@ class GraphFragment : Fragment(), Observer {
         if (resources.configuration.orientation == ORIENTATION_PORTRAIT) {
             lineChart.minimumHeight = 1200
         } else if (resources.configuration.orientation == ORIENTATION_LANDSCAPE) {
-            lineChart.minimumHeight = 500
+            lineChart.minimumHeight = 400
         }
-        var selecteditem = ""
+        var selectedItem = ""
 
         spNeedValue.onItemSelectedListener = object : OnItemSelectedListener {
             override fun onItemSelected(
@@ -70,12 +72,12 @@ class GraphFragment : Fragment(), Observer {
                 i: Int,
                 lng: Long
             ) {
-                selecteditem = adapter.getItemAtPosition(i).toString()
-                cbAuto.isVisible = selecteditem == form
-                btnPause.isVisible = selecteditem != form
-                btnStop.isVisible = selecteditem != form
-                btnStartRecord.isVisible = selecteditem != form
-                btnStopRecord.isVisible = selecteditem != form
+                selectedItem = adapter.getItemAtPosition(i).toString()
+                cbAuto.isVisible = selectedItem == form
+                btnPause.isVisible = selectedItem != form
+                btnStop.isVisible = selectedItem != form
+                btnStartRecord.isVisible = selectedItem != form
+                btnStopRecord.isVisible = selectedItem != form
             }
 
             override fun onNothingSelected(parentView: AdapterView<*>?) {}
@@ -126,7 +128,8 @@ class GraphFragment : Fragment(), Observer {
         entries.add(
             Entry(
                 realTime,
-                etValue.text.toString().replace(',', '.').toFloat()
+                nextFloat()
+                /*etValue.text.toString().replace(',', '.').toFloat()*/
             )
         )
         Collections.sort(entries, EntryXComparator())
@@ -137,6 +140,7 @@ class GraphFragment : Fragment(), Observer {
             ).also { lineDataSet ->
                 lineDataSet.setDrawCircles(false)
                 lineDataSet.setDrawValues(false)
+                lineDataSet.color = resources.getColor(R.color.colorAccent)
             })
         lineChart.invalidate()
     }
@@ -184,6 +188,7 @@ class GraphFragment : Fragment(), Observer {
     }
 
     override fun onPause() {
+        isStop = true
         Model.deleteObserver(this)
         super.onPause()
     }
