@@ -7,7 +7,6 @@ import android.content.Intent
 import android.content.IntentFilter
 import android.hardware.usb.UsbDevice
 import android.hardware.usb.UsbManager
-import android.os.Build
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
@@ -48,6 +47,18 @@ class MainActivity : AppCompatActivity() {
     private var mNeedToAuthorizeDevices = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        System.setProperty(
+            "org.apache.poi.javax.xml.stream.XMLInputFactory",
+            "com.fasterxml.aalto.stax.InputFactoryImpl"
+        );
+        System.setProperty(
+            "org.apache.poi.javax.xml.stream.XMLOutputFactory",
+            "com.fasterxml.aalto.stax.OutputFactoryImpl"
+        );
+        System.setProperty(
+            "org.apache.poi.javax.xml.stream.XMLEventFactory",
+            "com.fasterxml.aalto.stax.EventFactoryImpl"
+        )
         window.setFlags(
             WindowManager.LayoutParams.FLAG_FULLSCREEN,
             WindowManager.LayoutParams.FLAG_FULLSCREEN

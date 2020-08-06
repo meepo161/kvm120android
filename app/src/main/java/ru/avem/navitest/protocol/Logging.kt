@@ -126,7 +126,7 @@ object Logging {
         context: Context
     ): ByteArrayOutputStream {
         val res = context.resources
-        val inputStream = res.openRawResource(R.raw.graph)
+        val inputStream = res.openRawResource(R.raw.dot)
         val wb = XSSFWorkbook(inputStream)
         return wb.use { wb ->
             val sheet = wb.getSheetAt(0)
@@ -201,8 +201,8 @@ object Logging {
             wb.write(outStream)
             outStream.close()
             val out = ByteArrayOutputStream()
-            out.use { out ->
-                wb.write(out)
+            out.use {
+                wb.write(it)
             }
             out
         }
@@ -320,6 +320,7 @@ object Logging {
                 Environment.getExternalStorageDirectory()
                     .absolutePath + "/protocol", fileName
             )
+            file.parentFile!!.mkdirs()
             val fileOut = FileOutputStream(file)
             out.writeTo(fileOut)
             fileName = Environment.getExternalStorageDirectory()

@@ -20,6 +20,7 @@ import ru.avem.navitest.database.dot.ProtocolDot
 import ru.avem.navitest.model.Model
 import java.text.SimpleDateFormat
 import java.util.*
+import kotlin.random.Random.Default.nextFloat
 
 class ValuesFragment : Fragment(), Observer {
     private val handler = Handler()
@@ -38,6 +39,15 @@ class ValuesFragment : Fragment(), Observer {
 
         btnApplyTimeAveraging.setOnClickListener {
             //TODO перенести из КВМ120
+            handler.post {
+                etAmp.setText(String.format("%.4f", nextFloat()))
+                etAvr.setText(String.format("%.4f", nextFloat()))
+                etRms.setText(String.format("%.4f", nextFloat()))
+                etFreq.setText(String.format("%.4f", nextFloat()))
+                etCoefficentAmp.setText(String.format("%.4f", nextFloat()))
+                etCoefficentForm.setText(String.format("%.4f", nextFloat()))
+                etTimeAveraging.setText(String.format("%.1f", nextFloat()))
+            }
         }
         btnSaveDot.setOnClickListener {
             saveProtocolDotToDB()
@@ -56,13 +66,13 @@ class ValuesFragment : Fragment(), Observer {
                     }
                     KvmController.Action.ALL -> {
                         val allValues = value as Values
-                        etAmp.setText(String.format("%.4f", allValues.voltageAmp))
-                        etAvr.setText(String.format("%.4f", allValues.voltageAvr))
-                        etRms.setText(String.format("%.4f", allValues.voltageRms))
-                        etFreq.setText(String.format("%.4f", allValues.frequency))
-                        etCoefficentAmp.setText(String.format("%.4f", allValues.coefficentAmp))
-                        etCoefficentForm.setText(String.format("%.4f", allValues.coefficentForm))
-                        etTimeAveraging.setText(String.format("%.1f", allValues.timeAveraging))
+                        etAmp.setText(String.format("%.4f", nextFloat()))
+                        etAvr.setText(String.format("%.4f", nextFloat()))
+                        etRms.setText(String.format("%.4f", nextFloat()))
+                        etFreq.setText(String.format("%.4f", nextFloat()))
+                        etCoefficentAmp.setText(String.format("%.4f", nextFloat()))
+                        etCoefficentForm.setText(String.format("%.4f", nextFloat()))
+                        etTimeAveraging.setText(String.format("%.1f", nextFloat()))
                     }
                 }
             }

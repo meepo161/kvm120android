@@ -196,8 +196,7 @@
                 android:layout_weight="1" />
 
             <Button
-                android:id="@+id/btnApplyTimeAveraging"
-                android:layout_width="wrap_content"
+                android:id="@+id/btnApplyTimeAveraging"                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/apply" />
 
@@ -215,8 +214,7 @@
             tools:context=".view.BurgerActivity">
 
             <Button
-                android:id="@+id/btnSaveDot"
-                android:layout_width="wrap_content"
+                android:id="@+id/btnSaveDot"                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/saveDot" />
 

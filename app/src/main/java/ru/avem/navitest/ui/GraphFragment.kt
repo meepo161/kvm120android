@@ -61,7 +61,7 @@ class GraphFragment : Fragment(), Observer {
         if (resources.configuration.orientation == ORIENTATION_PORTRAIT) {
             lineChart.minimumHeight = 1200
         } else if (resources.configuration.orientation == ORIENTATION_LANDSCAPE) {
-            lineChart.minimumHeight = 500
+            lineChart.minimumHeight = 400
         }
         var selectedItem = ""
 
@@ -185,6 +185,7 @@ class GraphFragment : Fragment(), Observer {
     override fun onResume() {
         super.onResume()
         Model.addObserver(this)
+        drawGraph(mutableListOf())
     }
 
     override fun onPause() {
