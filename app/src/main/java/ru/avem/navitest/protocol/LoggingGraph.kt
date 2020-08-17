@@ -33,7 +33,6 @@ import org.apache.poi.xssf.usermodel.XSSFSheet
 import org.apache.poi.xssf.usermodel.XSSFWorkbook
 import org.openxmlformats.schemas.drawingml.x2006.chart.CTBoolean
 import ru.avem.navitest.R
-import ru.avem.navitest.database.dot.ProtocolDot
 import ru.avem.navitest.database.graph.ProtocolGraph
 import ru.avem.navitest.utils.Utils
 import java.io.ByteArrayOutputStream
@@ -43,15 +42,15 @@ import java.io.IOException
 import java.nio.ByteBuffer
 import java.text.SimpleDateFormat
 
-object Logging {
+object LoggingGraph {
     private const val ACTION_USB_PERMISSION = "ru.avem.coilstestingfacility.USB_PERMISSION"
     fun preview(
         activity: Activity,
-        protocolDot: ProtocolDot
+        protocolGraph: ProtocolGraph
     ) {
         if (requestPermission(activity)) {
-            if (protocolDot != null) {
-                SaveTask(2, activity).execute(protocolDot)
+            if (protocolGraph != null) {
+                SaveTask(2, activity).execute(protocolGraph)
             } else {
                 Toast.makeText(
                     activity,
@@ -82,7 +81,7 @@ object Logging {
             return false
         } else {
             val path =
-                Environment.getExternalStorageDirectory().absolutePath + "/protocolDot"
+                Environment.getExternalStorageDirectory().absolutePath + "/protocolGraph"
             val storageDir = File(path)
             if (!storageDir.exists() && !storageDir.mkdirs()) {
                 return false
@@ -92,13 +91,13 @@ object Logging {
     }
 
     private fun writeWorkbookToMassStorage(
-        protocolDot: ProtocolDot,
+        protocolGraph: ProtocolGraph,
         context: Context
     ): String {
         val sdf =
             SimpleDateFormat("dd_MM(HH-mm-ss)", Utils.RU_LOCALE)
         var fileName =
-            "protocolDot-" + sdf.format(System.currentTimeMillis()) + ".xlsx"
+            "protocolGraph-" + sdf.format(System.currentTimeMillis()) + ".xlsx"
         val massStorageDevices =
             UsbMassStorageDevice.getMassStorageDevices(context)
         val currentDevice = massStorageDevices[0]
@@ -109,7 +108,7 @@ object Logging {
             val root = currentFS.rootDirectory
             val file = root.createFile(fileName)
             val out =
-                convertProtocolDotToWorkbook(protocolDot, context)
+                convertProtocolGraphToWorkbook(protocolGraph, context)
             file.write(0, ByteBuffer.wrap(out.toByteArray()))
             file.close()
             fileName = currentFS.volumeLabel + "/" + fileName
@@ -118,50 +117,6 @@ object Logging {
             Log.e("TAG", "setup device error", e)
         }
         return fileName
-    }
-
-    @Throws(IOException::class)
-    private fun convertProtocolDotToWorkbook(
-        protocolDot: ProtocolDot,
-        context: Context
-    ): ByteArrayOutputStream {
-        val res = context.resources
-        val inputStream = res.openRawResource(R.raw.dot)
-        val wb = XSSFWorkbook(inputStream)
-        return wb.use { wb ->
-            val sheet = wb.getSheetAt(0)
-            for (i in 0..99) {
-                val row = sheet.getRow(i)
-                if (row != null) {
-                    for (j in 0..9) {
-                        val cell = row.getCell(j)
-                        if (cell != null && cell.cellTypeEnum == CellType.STRING) {
-                            when (cell.stringCellValue) {
-                                "#PROTOCOL_NUMBER#" -> cell.setCellValue(protocolDot.id.toString())
-                                "#DATE#" -> cell.setCellValue(protocolDot.dateDot)
-                                "#TIME#" -> cell.setCellValue(protocolDot.timeDot)
-                                "#RMS#" -> cell.setCellValue(protocolDot.rms)
-                                "#AVR#" -> cell.setCellValue(protocolDot.avr)
-                                "#AMP#" -> cell.setCellValue(protocolDot.amp)
-                                "#FREQ#" -> cell.setCellValue(protocolDot.freq)
-                                "#COEFAMP#" -> cell.setCellValue(protocolDot.coefamp)
-                                "#COEFFORM#" -> cell.setCellValue(protocolDot.coefform)
-                                else -> {
-                                    if (cell.stringCellValue.contains("#")) {
-                                        cell.setCellValue("")
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-            val out = ByteArrayOutputStream()
-            out.use { out ->
-                wb.write(out)
-            }
-            out
-        }
     }
 
     @Throws(IOException::class)
@@ -301,30 +256,30 @@ object Logging {
     }
 
     private fun writeWorkbookToInternalStorage(
-        protocol: ProtocolDot,
+        protocol: ProtocolGraph,
         context: Context
     ): String {
         clearDirectory(
             File(
-                Environment.getExternalStorageDirectory().absolutePath + "/protocol"
+                Environment.getExternalStorageDirectory().absolutePath + "/graph"
             )
         )
         val sdf =
             SimpleDateFormat("dd_MM(HH-mm-ss)", Utils.RU_LOCALE)
         var fileName =
-            "protocol-" + sdf.format(System.currentTimeMillis()) + ".xlsx"
+            "graph-" + sdf.format(System.currentTimeMillis()) + ".xlsx"
         try {
             val out =
-                convertProtocolDotToWorkbook(protocol, context)
+                convertProtocolGraphToWorkbook(protocol, context)
             val file = File(
                 Environment.getExternalStorageDirectory()
-                    .absolutePath + "/protocol", fileName
+                    .absolutePath + "/graph", fileName
             )
             file.parentFile!!.mkdirs()
             val fileOut = FileOutputStream(file)
             out.writeTo(fileOut)
             fileName = Environment.getExternalStorageDirectory()
-                .absolutePath + "/protocol/" + fileName
+                .absolutePath + "/graph/" + fileName
             out.close()
             fileOut.close()
         } catch (e: IOException) {
@@ -344,7 +299,7 @@ object Logging {
 
     fun saveFileOnFlashMassStorage(
         context: Context,
-        protocol: ProtocolDot
+        protocol: ProtocolGraph
     ) {
         if (checkMassStorageConnection(context)) {
             SaveTask(1, context).execute(protocol)
@@ -404,24 +359,24 @@ object Logging {
         private val mType: Int,
         private val mContext: Context
     ) :
-        AsyncTask<ProtocolDot?, Void?, String?>() {
+        AsyncTask<ProtocolGraph?, Void?, String?>() {
         private val dialog: ProgressDialog
         override fun onPreExecute() {
             super.onPreExecute()
             dialog.show()
         }
 
-        override fun doInBackground(vararg params: ProtocolDot?): String? {
+        override fun doInBackground(vararg params: ProtocolGraph?): String? {
             var fileName: String? = null
-            var protocolDot = params[0]!!
+            var protocolGraph = params[0]!!
             if (mType == 1) {
                 fileName = writeWorkbookToMassStorage(
-                    protocolDot,
+                    protocolGraph,
                     mContext
                 )
             } else if (mType == 2) {
                 fileName = writeWorkbookToInternalStorage(
-                    protocolDot,
+                    protocolGraph,
                     mContext
                 )
             }

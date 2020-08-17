@@ -16,10 +16,13 @@ import kotlinx.coroutines.launch
 import ru.avem.navitest.App
 import ru.avem.navitest.R
 import ru.avem.navitest.database.dot.ProtocolDot
-import ru.avem.navitest.protocol.Logging
+import ru.avem.navitest.protocol.LoggingDot
+import java.lang.Thread.sleep
 
 class ProtocolsDotsFragment : Fragment() {
     private val handler = Handler()
+    private var mIsViewInitiated = false
+    private lateinit var listOfProtocolsDots: List<ProtocolDot>
 
 
     override fun onCreateView(
@@ -33,13 +36,19 @@ class ProtocolsDotsFragment : Fragment() {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
 
+        GlobalScope.launch(Dispatchers.IO) {
+            listOfProtocolsDots = App.instance.db.protocolDotDao().getAll()
+            mIsViewInitiated = true
+        }
+
+        while (!mIsViewInitiated) {
+            sleep(10)
+        }
+
+        spinner_protocol_dots.adapter =
+            ArrayAdapter(requireContext(), R.layout.list_item_dots, listOfProtocolsDots)
 
         GlobalScope.launch(Dispatchers.IO) {
-            val listOfProtocolsDots: List<ProtocolDot> = App.instance.db.protocolGraphDot().getAll()
-
-            spinner_protocol_dots.adapter =
-                ArrayAdapter(requireContext(), R.layout.list_item, listOfProtocolsDots)
-
             spinner_protocol_dots.onItemSelectedListener = object :
                 AdapterView.OnItemSelectedListener {
                 override fun onItemSelected(
@@ -58,36 +67,40 @@ class ProtocolsDotsFragment : Fragment() {
                     }
                 }
 
-                override fun onNothingSelected(parentView: AdapterView<*>?) {}
+                override fun onNothingSelected(parentView: AdapterView<*>?) {
+                }
             }
         }
 
 
         btnOpen.setOnClickListener {
-            Logging.preview(this.requireActivity(),
+            LoggingDot.preview(
+                this.requireActivity(),
                 spinner_protocol_dots.selectedItem as ProtocolDot
             )
         }
+
         btnSave.setOnClickListener {
             //TODO
         }
+
         btnDelete.setOnClickListener {
             GlobalScope.launch(Dispatchers.IO) {
-                App.instance.db.protocolGraphDot()
+                App.instance.db.protocolDotDao()
                     .deleteById((spinner_protocol_dots.selectedItem as ProtocolDot?)?.id ?: -1)
             }
             val listOfProtocolsDots = GlobalScope.async(Dispatchers.IO) {
-                App.instance.db.protocolGraphDot().getAll()
+                App.instance.db.protocolDotDao().getAll()
             }
 
             GlobalScope.launch(Dispatchers.Main) {
                 spinner_protocol_dots.adapter =
-                    ArrayAdapter(requireContext(), R.layout.list_item, listOfProtocolsDots.await())
+                    ArrayAdapter(
+                        requireContext(),
+                        R.layout.list_item_dots,
+                        listOfProtocolsDots.await()
+                    )
             }
-
-
         }
-
     }
-
 }

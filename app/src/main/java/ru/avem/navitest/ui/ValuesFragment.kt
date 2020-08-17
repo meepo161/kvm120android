@@ -23,6 +23,7 @@ import java.util.*
 import kotlin.random.Random.Default.nextFloat
 
 class ValuesFragment : Fragment(), Observer {
+    private var timeRecord = 1
     private val handler = Handler()
     private var mIsViewInitiated = false
 
@@ -98,6 +99,7 @@ class ValuesFragment : Fragment(), Observer {
 
         etCoefficentForm.isVisible = (prefs.getBoolean("tvCoefficentForm", false))
         tvCoefficentForm.isVisible = (prefs.getBoolean("tvCoefficentForm", false))
+
         super.onResume()
         Model.addObserver(this)
     }
@@ -113,7 +115,7 @@ class ValuesFragment : Fragment(), Observer {
 
         val unixTime = System.currentTimeMillis()
         GlobalScope.launch(Dispatchers.IO) {
-            App.instance.db.protocolGraphDot().insert(
+            App.instance.db.protocolDotDao().insert(
                 ProtocolDot(
                     dateDot = dateFormatter.format(unixTime).toString(),
                     timeDot = timeFormatter.format(unixTime).toString(),

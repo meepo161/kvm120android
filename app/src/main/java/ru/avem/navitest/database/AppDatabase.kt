@@ -13,7 +13,7 @@ import ru.avem.navitest.utils.DATABASE_NAME
 @Database(entities = [ProtocolGraph::class, ProtocolDot::class], version = 1)
 abstract class AppDatabase : RoomDatabase() {
     abstract fun protocolGraphDao(): ProtocolGraphDao
-    abstract fun protocolGraphDot(): ProtocolDotDao
+    abstract fun protocolDotDao(): ProtocolDotDao
 
     companion object {
         @Volatile

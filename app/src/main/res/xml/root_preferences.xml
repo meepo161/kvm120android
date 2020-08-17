@@ -23,14 +23,9 @@
             app:key="tvCoefficentAmp"
             app:title="@string/tvCoefficentAmp" />
         <SwitchPreferenceCompat
-            app:icon="@drawable/ic_baseline_format_align_center_24"
+            app:icon="@drawable/ic_baseline_functions_24"
             app:key="tvCoefficentForm"
             app:title="@string/tvCoefficentForm" />
-        <SwitchPreferenceCompat
-            app:icon="@drawable/ic_baseline_functions_24"
-            app:key="tvRazmah"
-            app:title="@string/tvRazmah" />
-
 
     </PreferenceCategory>
 
@@ -40,7 +35,7 @@
             app:icon="@drawable/ic_baseline_timer_24"
             app:entries="@array/listTimesRecord"
             app:entryValues="@array/listTimesRecord"
-            app:key="time"
+            app:key="timeRecord"
             app:title="Запись, мин"
             app:summary="Выберите из списка"/>
 
