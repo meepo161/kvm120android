@@ -18,14 +18,18 @@ import ru.avem.navitest.communication.devices.kvm.KvmController
 import ru.avem.navitest.communication.devices.kvm.Values
 import ru.avem.navitest.database.dot.ProtocolDot
 import ru.avem.navitest.model.Model
+import java.lang.Thread.sleep
 import java.text.SimpleDateFormat
 import java.util.*
+import kotlin.concurrent.thread
 import kotlin.random.Random.Default.nextFloat
 
+
 class ValuesFragment : Fragment(), Observer {
-    private var timeRecord = 1
     private val handler = Handler()
     private var mIsViewInitiated = false
+    var t = Thread()
+    var isPaused = false
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -100,16 +104,39 @@ class ValuesFragment : Fragment(), Observer {
         etCoefficentForm.isVisible = (prefs.getBoolean("tvCoefficentForm", false))
         tvCoefficentForm.isVisible = (prefs.getBoolean("tvCoefficentForm", false))
 
+
+        t = Thread(Runnable {
+            while (!isPaused) {
+                try {
+                    requireActivity().runOnUiThread {
+                        etAmp.setText(String.format("%.4f", nextFloat()))
+                        etAvr.setText(String.format("%.4f", nextFloat()))
+                        etRms.setText(String.format("%.4f", nextFloat()))
+                        etFreq.setText(String.format("%.4f", nextFloat()))
+                        etCoefficentAmp.setText(String.format("%.4f", nextFloat()))
+                        etCoefficentForm.setText(String.format("%.4f", nextFloat()))
+                        etTimeAveraging.setText(String.format("%.1f", nextFloat()))
+                    }
+                } catch (e: InterruptedException) {
+                    e.printStackTrace()
+                }
+                sleep(100)
+            }
+        })
+        t.isDaemon = true
+        t.start()
+
         super.onResume()
         Model.addObserver(this)
     }
 
     override fun onPause() {
+        isPaused = true
         Model.deleteObserver(this)
         super.onPause()
     }
 
-    fun saveProtocolDotToDB() {
+    private fun saveProtocolDotToDB() {
         val dateFormatter = SimpleDateFormat("dd.MM.y", Locale.US)
         val timeFormatter = SimpleDateFormat("HH:mm:ss", Locale.US)
 

@@ -47,7 +47,7 @@ class ProtocolsGraphsFragment : Fragment() {
         if (resources.configuration.orientation == MainActivity.ORIENTATION_PORTRAIT) {
             lineChartProtocol.minimumHeight = 1200
         } else if (resources.configuration.orientation == MainActivity.ORIENTATION_LANDSCAPE) {
-            lineChartProtocol.minimumHeight = 600
+            lineChartProtocol.minimumHeight = 500
         }
 
         GlobalScope.launch(Dispatchers.IO) {
@@ -144,7 +144,7 @@ class ProtocolsGraphsFragment : Fragment() {
         if (newConfig.orientation == MainActivity.ORIENTATION_PORTRAIT) {
             lineChartProtocol.minimumHeight = 1200
         } else if (newConfig.orientation == MainActivity.ORIENTATION_LANDSCAPE) {
-            lineChartProtocol.minimumHeight = 600
+            lineChartProtocol.minimumHeight = 500
         }
     }
 }

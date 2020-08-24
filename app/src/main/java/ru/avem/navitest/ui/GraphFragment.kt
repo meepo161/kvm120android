@@ -32,7 +32,6 @@ import java.lang.Thread.sleep
 import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.concurrent.thread
-import kotlin.random.Random.Default.nextDouble
 import kotlin.random.Random.Default.nextFloat
 
 
@@ -153,8 +152,8 @@ class GraphFragment : Fragment(), Observer {
     }
 
     private fun handleStopRecord() {
-        toStopRecord()
         isStartRecord = false
+        toStopRecord()
     }
 
     private fun recordFormGraphInDB(list: List<Float>) {
@@ -170,20 +169,16 @@ class GraphFragment : Fragment(), Observer {
         thread {
             var realTime = 0.0
             while (isStartRecord) {
-                if (isPause) {
-                    listOfValues.add("NaN")
-                } else {
-                    listOfValues.add(nextDouble().toString())
-                }
+                listOfValues.add(etValue.text.toString())
                 sleep(100)
                 realTime += 0.1
                 if (realTime > timeRecord) {
-                    handleStopRecord()
-                    isStop = true // todo
+                    isStartRecord = false
+                    GlobalScope.launch(Dispatchers.Main) {
+                        handleStopRecord() //как вызвать не из потока
+                    }
                 }
             }
-//            btnRecord.isDisable = false
-//            btnStopRecord.isDisable = true
             saveProtocolToDB(listOfValues)
         }
     }
@@ -216,11 +211,7 @@ class GraphFragment : Fragment(), Observer {
         lineChart.visibility = View.VISIBLE
         GlobalScope.launch(Dispatchers.Main) {
             while (!isStop) {
-                if (isPause) {
-                    //TODO вместо 0 новый график рисовать
-                } else {
-                    drawGraph(entries)
-                }
+                drawGraph(entries)
                 realTime += 0.1f
                 delay(100)
             }
@@ -229,14 +220,12 @@ class GraphFragment : Fragment(), Observer {
     }
 
     private fun drawGraph(entries: MutableList<Entry>) {
-        etValue.text = nextFloat().toString()
-        entries.add(
-            Entry(
-                realTime,
-                nextFloat()
-                /*etValue.text.toString().replace(',', '.').toFloat()*/
-            )
-        )
+        if (!isPause) {
+            etValue.text = nextFloat().toString()
+        } else {
+            etValue.text = 0.0f.toString()
+        }
+        entries.add(Entry(realTime, etValue.text.toString().replace(',', '.').toFloat()))
         Collections.sort(entries, EntryXComparator())
         lineChart.data = LineData(
             LineDataSet(
