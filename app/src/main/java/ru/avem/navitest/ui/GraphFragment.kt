@@ -9,6 +9,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.AdapterView.OnItemSelectedListener
+import android.widget.Toast
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import com.github.mikephil.charting.data.Entry
@@ -120,13 +121,16 @@ class GraphFragment : Fragment(), Observer {
     private fun handleStart() {
         toStart()
         if (spNeedValue.selectedItem.toString() == form) {
-            btnStart.isEnabled = false
-            btnStop.isEnabled = false
+//            btnStart.isEnabled = false
+//            btnStop.isEnabled = false
             do {
-                val listOfDots = listOf(0f) /*CommunicationModel.avem4VoltmeterController.readDotsF()*/
-                drawGraphFormVoltage(listOfDots)
-                recordFormGraphInDB(listOfDots)
-                sleep(2000)
+//                val listOfDots = listOf(0f) /*CommunicationModel.avem4VoltmeterController.readDotsF()*/
+//                drawGraphFormVoltage(listOfDots)
+//                recordFormGraphInDB(listOfDots)
+//                sleep(2000)
+                Toast.makeText(context, "Данная функция находится в разработке", Toast.LENGTH_SHORT).show()
+                cbAuto.isSelected = false
+                toStop()
             } while (cbAuto.isSelected)
         } else {
             showGraph()

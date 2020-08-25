@@ -26,11 +26,12 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/select_protocol" />
+                android:text="@string/select_protocol"
+                android:textSize="8pt" />
 
             <Spinner
                 android:id="@+id/spinner_protocol_graphs"
-                android:layout_width="230dp"
+                android:layout_width="200dp"
                 android:layout_height="wrap_content"
                 android:text="@string/open" />
 
@@ -46,7 +47,6 @@
             android:gravity="center"
             android:orientation="horizontal"
             tools:context=".view.BurgerActivity">
-
 
 
             <com.github.mikephil.charting.charts.LineChart
@@ -74,7 +74,8 @@
                 android:id="@+id/btnOpen"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/open" />
+                android:text="@string/open"
+                android:textSize="8pt" />
 
             <Space
                 android:layout_width="8dp"
@@ -84,7 +85,8 @@
                 android:id="@+id/btnSave"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/save" />
+                android:text="@string/save"
+                android:textSize="8pt" />
 
             <Space
                 android:layout_width="8dp"
@@ -94,7 +96,8 @@
                 android:id="@+id/btnDelete"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/delete" />
+                android:text="@string/delete"
+                android:textSize="8pt" />
 
         </LinearLayout>
 

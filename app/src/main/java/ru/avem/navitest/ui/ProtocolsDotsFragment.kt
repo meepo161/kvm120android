@@ -1,5 +1,6 @@
 package ru.avem.navitest.ui
 
+import android.content.res.Configuration
 import android.os.Bundle
 import android.os.Handler
 import android.view.LayoutInflater
@@ -7,6 +8,8 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
+import android.widget.LinearLayout
+import androidx.core.view.size
 import androidx.fragment.app.Fragment
 import kotlinx.android.synthetic.main.fragment_protocol_dots.*
 import kotlinx.coroutines.Dispatchers
@@ -14,6 +17,7 @@ import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
 import ru.avem.navitest.App
+import ru.avem.navitest.MainActivity
 import ru.avem.navitest.R
 import ru.avem.navitest.database.dot.ProtocolDot
 import ru.avem.navitest.protocol.LoggingDot
@@ -35,6 +39,12 @@ class ProtocolsDotsFragment : Fragment() {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
+
+        if (resources.configuration.orientation == MainActivity.ORIENTATION_PORTRAIT) {
+            main_layout.orientation = LinearLayout.VERTICAL
+        } else if (resources.configuration.orientation == MainActivity.ORIENTATION_LANDSCAPE) {
+            main_layout.orientation = LinearLayout.HORIZONTAL
+        }
 
         GlobalScope.launch(Dispatchers.IO) {
             listOfProtocolsDots = App.instance.db.protocolDotDao().getAll()
@@ -101,6 +111,15 @@ class ProtocolsDotsFragment : Fragment() {
                         listOfProtocolsDots.await()
                     )
             }
+        }
+    }
+
+    override fun onConfigurationChanged(newConfig: Configuration) {
+        super.onConfigurationChanged(newConfig)
+        if (resources.configuration.orientation == MainActivity.ORIENTATION_PORTRAIT) {
+            main_layout.orientation = LinearLayout.VERTICAL
+        } else if (resources.configuration.orientation == MainActivity.ORIENTATION_LANDSCAPE) {
+            main_layout.orientation = LinearLayout.HORIZONTAL
         }
     }
 }

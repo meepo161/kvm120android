@@ -1,18 +1,21 @@
 package ru.avem.navitest.ui
 
+import android.content.res.Configuration
 import android.os.Bundle
 import android.os.Handler
 import android.preference.PreferenceManager
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.LinearLayout
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
-import kotlinx.android.synthetic.main.fragment_values.*
+import kotlinx.android.synthetic.main.fragment_values_horizontal.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import ru.avem.navitest.App
+import ru.avem.navitest.MainActivity
 import ru.avem.navitest.R
 import ru.avem.navitest.communication.devices.kvm.KvmController
 import ru.avem.navitest.communication.devices.kvm.Values
@@ -21,24 +24,29 @@ import ru.avem.navitest.model.Model
 import java.lang.Thread.sleep
 import java.text.SimpleDateFormat
 import java.util.*
-import kotlin.concurrent.thread
 import kotlin.random.Random.Default.nextFloat
 
 
 class ValuesFragment : Fragment(), Observer {
     private val handler = Handler()
     private var mIsViewInitiated = false
-    var t = Thread()
-    var isPaused = false
+    private var t = Thread()
+    private var isPaused = false
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View = inflater.inflate(R.layout.fragment_values, container, false)
+    ): View = inflater.inflate(R.layout.fragment_values_horizontal, container, false)
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
+
+        if (resources.configuration.orientation == MainActivity.ORIENTATION_PORTRAIT) {
+            main_layout.orientation = LinearLayout.VERTICAL
+        } else if (resources.configuration.orientation == MainActivity.ORIENTATION_LANDSCAPE) {
+            main_layout.orientation = LinearLayout.HORIZONTAL
+        }
 
         mIsViewInitiated = true
 
@@ -57,8 +65,8 @@ class ValuesFragment : Fragment(), Observer {
         btnSaveDot.setOnClickListener {
             saveProtocolDotToDB()
         }
-
     }
+
 
     override fun update(observable: Observable, values: Any) {
         if (mIsViewInitiated) {
@@ -106,6 +114,10 @@ class ValuesFragment : Fragment(), Observer {
 
 
         t = Thread(Runnable {
+            requireActivity().runOnUiThread {
+                etTimeAveraging.setText(String.format("%.1f", nextFloat()))
+            }
+            isPaused = false
             while (!isPaused) {
                 try {
                     requireActivity().runOnUiThread {
@@ -115,7 +127,6 @@ class ValuesFragment : Fragment(), Observer {
                         etFreq.setText(String.format("%.4f", nextFloat()))
                         etCoefficentAmp.setText(String.format("%.4f", nextFloat()))
                         etCoefficentForm.setText(String.format("%.4f", nextFloat()))
-                        etTimeAveraging.setText(String.format("%.1f", nextFloat()))
                     }
                 } catch (e: InterruptedException) {
                     e.printStackTrace()
@@ -154,6 +165,15 @@ class ValuesFragment : Fragment(), Observer {
                     coefform = etCoefficentForm.text.toString()
                 )
             )
+        }
+    }
+
+    override fun onConfigurationChanged(newConfig: Configuration) {
+        super.onConfigurationChanged(newConfig)
+        if (resources.configuration.orientation == MainActivity.ORIENTATION_PORTRAIT) {
+            main_layout.orientation = LinearLayout.VERTICAL
+        } else if (resources.configuration.orientation == MainActivity.ORIENTATION_LANDSCAPE) {
+            main_layout.orientation = LinearLayout.HORIZONTAL
         }
     }
 }

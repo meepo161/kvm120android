@@ -27,7 +27,8 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_margin="16dp"
-                android:text="@string/graph" />
+                android:text="@string/graph"
+                android:textSize="8pt" />
 
             <Spinner
                 android:id="@+id/spNeedValue"
@@ -35,7 +36,6 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:entries="@array/values" />
-
 
         </LinearLayout>
 
@@ -50,7 +50,8 @@
                 android:id="@+id/btnStart"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/start" />
+                android:text="@string/start"
+                android:textSize="8pt" />
 
 
             <Space
@@ -61,7 +62,8 @@
                 android:id="@+id/cbAuto"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/auto" />
+                android:text="@string/auto"
+                android:textSize="8pt" />
 
             <Space
                 android:layout_width="8dp"
@@ -71,7 +73,8 @@
                 android:id="@+id/btnPause"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/pause" />
+                android:text="@string/pause"
+                android:textSize="8pt" />
 
             <Space
                 android:layout_width="16dp"
@@ -81,7 +84,8 @@
                 android:id="@+id/btnStop"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/stop"/>
+                android:text="@string/stop"
+                android:textSize="8pt" />
         </LinearLayout>
 
 
@@ -96,7 +100,8 @@
                 android:id="@+id/btnStartRecord"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/start_record" />
+                android:text="@string/start_record"
+                android:textSize="8pt" />
 
             <Space
                 android:layout_width="16dp"
@@ -106,7 +111,8 @@
                 android:id="@+id/btnStopRecord"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/stop_record" />
+                android:text="@string/stop_record"
+                android:textSize="8pt" />
 
         </LinearLayout>
 
@@ -122,7 +128,8 @@
                 android:id="@+id/etValue"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/defaultValue" />
+                android:text="@string/defaultValue"
+                android:textSize="12pt" />
 
         </LinearLayout>
 

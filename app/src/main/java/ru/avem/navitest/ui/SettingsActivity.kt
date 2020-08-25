@@ -7,7 +7,7 @@ import android.preference.PreferenceManager
 import android.view.WindowManager
 import androidx.appcompat.app.AppCompatActivity
 import androidx.preference.PreferenceFragmentCompat
-import kotlinx.android.synthetic.main.fragment_values.*
+import kotlinx.android.synthetic.main.fragment_values_vertical.*
 import ru.avem.navitest.R
 
 

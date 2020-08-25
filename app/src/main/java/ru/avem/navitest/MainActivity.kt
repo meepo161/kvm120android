@@ -11,6 +11,7 @@ import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
 import android.view.WindowManager
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import androidx.drawerlayout.widget.DrawerLayout
@@ -109,7 +110,9 @@ class MainActivity : AppCompatActivity() {
             Intent(this, SettingsActivity::class.java).also {
                 startActivity(it)
             }
-
+        } else if (menuItem.itemId == R.id.action_about_us) {
+            Toast.makeText(this, "Авиаагрегат-Н\nг.Новочеркасск\nДата: 25.08.2020\nВерсия ПО: DEMO", Toast.LENGTH_LONG)
+                .show()
         }
         return super.onOptionsItemSelected(menuItem)
     }

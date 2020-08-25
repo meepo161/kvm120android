@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_margin="24dp"
+    android:layout_margin="4dp"
     tools:context=".ui.ValuesFragment">
 
     <LinearLayout
@@ -17,6 +17,7 @@
         tools:context=".view.BurgerActivity">
 
         <LinearLayout
+            android:id="@+id/main_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center"
@@ -35,18 +36,20 @@
                     android:layout_height="wrap_content"
                     android:text="@string/tvAmp"
                     android:textAlignment="center"
-                    android:textStyle="bold"
+                    android:textSize="8pt"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintLeft_toLeftOf="parent"
                     app:layout_constraintRight_toRightOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
 
-                <EditText
+                <TextView
                     android:id="@+id/etAmp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:inputType="text"
-                    android:text="@string/defaultValue" />
+                    android:text="@string/defaultValue"
+                    android:textSize="12pt"
+                    android:layout_margin="8dp"/>
+
 
                 <TextView
                     android:id="@+id/tvAvr"
@@ -54,18 +57,19 @@
                     android:layout_height="wrap_content"
                     android:text="@string/tvAvr"
                     android:textAlignment="center"
-                    android:textStyle="bold"
+                    android:textSize="8pt"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintLeft_toLeftOf="parent"
                     app:layout_constraintRight_toRightOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
 
-                <EditText
+                <TextView
                     android:id="@+id/etAvr"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:inputType="text"
-                    android:text="@string/defaultValue" />
+                    android:layout_margin="8dp"
+                    android:text="@string/defaultValue"
+                    android:textSize="12pt" />
 
                 <TextView
                     android:id="@+id/tvRms"
@@ -73,20 +77,25 @@
                     android:layout_height="wrap_content"
                     android:text="@string/tvRms"
                     android:textAlignment="center"
-                    android:textStyle="bold"
+                    android:textSize="8pt"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintLeft_toLeftOf="parent"
                     app:layout_constraintRight_toRightOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
 
-                <EditText
+                <TextView
                     android:id="@+id/etRms"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:inputType="text"
-                    android:text="@string/defaultValue" />
+                    android:layout_margin="8dp"
+                    android:text="@string/defaultValue"
+                    android:textSize="12pt" />
 
             </LinearLayout>
+
+            <Space
+                android:layout_width="16dp"
+                android:layout_height="wrap_content" />
 
             <LinearLayout
                 android:layout_width="wrap_content"
@@ -102,18 +111,19 @@
                     android:layout_height="wrap_content"
                     android:text="@string/tvFreq"
                     android:textAlignment="center"
-                    android:textStyle="bold"
+                    android:textSize="8pt"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintLeft_toLeftOf="parent"
                     app:layout_constraintRight_toRightOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
 
-                <EditText
+                <TextView
                     android:id="@+id/etFreq"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:inputType="text"
-                    android:text="@string/defaultValue" />
+                    android:layout_margin="8dp"
+                    android:text="@string/defaultValue"
+                    android:textSize="12pt" />
 
                 <TextView
                     android:id="@+id/tvCoefficentAmp"
@@ -121,18 +131,19 @@
                     android:layout_height="wrap_content"
                     android:text="@string/tvCoefficentAmp"
                     android:textAlignment="center"
-                    android:textStyle="bold"
+                    android:textSize="8pt"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintLeft_toLeftOf="parent"
                     app:layout_constraintRight_toRightOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
 
-                <EditText
+                <TextView
                     android:id="@+id/etCoefficentAmp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:inputType="text"
-                    android:text="@string/defaultValue" />
+                    android:layout_margin="8dp"
+                    android:text="@string/defaultValue"
+                    android:textSize="12pt" />
 
                 <TextView
                     android:id="@+id/tvCoefficentForm"
@@ -140,19 +151,21 @@
                     android:layout_height="wrap_content"
                     android:text="@string/tvCoefficentForm"
                     android:textAlignment="center"
-                    android:textStyle="bold"
+                    android:textSize="8pt"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintLeft_toLeftOf="parent"
                     app:layout_constraintRight_toRightOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
 
-                <EditText
+                <TextView
                     android:id="@+id/etCoefficentForm"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:inputType="text"
-                    android:text="@string/defaultValue" />
+                    android:layout_margin="8dp"
+                    android:text="@string/defaultValue"
+                    android:textSize="12pt" />
             </LinearLayout>
+
 
         </LinearLayout>
 
@@ -167,12 +180,32 @@
             android:orientation="horizontal"
             tools:context=".view.BurgerActivity">
 
+            <Button
+                android:id="@+id/btnSaveDot"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/saveDot"
+                android:textSize="8pt" />
+
+        </LinearLayout>
+
+        <Space
+            android:layout_width="wrap_content"
+            android:layout_height="16dp" />
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:orientation="horizontal"
+            tools:context=".view.BurgerActivity">
+
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/averaging_time"
                 android:textAlignment="center"
-                android:textStyle="bold"
+                android:textSize="8pt"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
@@ -183,12 +216,13 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1" />
 
-            <EditText
+            <TextView
                 android:id="@+id/etTimeAveraging"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:inputType="text"
-                android:text="@string/defaultValue" />
+
+                android:text="@string/defaultValue"
+                android:textSize="12pt" />
 
             <Space
                 android:layout_width="16dp"
@@ -196,27 +230,12 @@
                 android:layout_weight="1" />
 
             <Button
-                android:id="@+id/btnApplyTimeAveraging"                android:layout_width="wrap_content"
+                android:id="@+id/btnApplyTimeAveraging"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/apply" />
+                android:text="@string/apply"
+                android:textSize="8pt" />
 
-        </LinearLayout>
-
-        <Space
-            android:layout_width="wrap_content"
-            android:layout_height="8dp" />
-
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:gravity="center"
-            android:orientation="horizontal"
-            tools:context=".view.BurgerActivity">
-
-            <Button
-                android:id="@+id/btnSaveDot"                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/saveDot" />
 
         </LinearLayout>
 
